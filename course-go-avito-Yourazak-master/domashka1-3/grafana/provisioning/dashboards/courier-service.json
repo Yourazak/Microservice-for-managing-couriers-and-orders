@@ -1,0 +1,44 @@
+{
+  "dashboard": {
+    "title": "Courier Service Metrics",
+    "tags": ["courier", "monitoring"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "HTTP Requests Rate",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "targets": [{
+          "expr": "rate(http_requests_total[5m])",
+          "legendFormat": "{{method}} {{path}}"
+        }],
+        "xaxis": {"show": true},
+        "yaxes": [{"format": "ops", "show": true}]
+      },
+      {
+        "id": 2,
+        "title": "HTTP Status Codes",
+        "type": "piechart",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+        "targets": [{
+          "expr": "sum(http_requests_total) by (status)",
+          "legendFormat": "Status {{status}}"
+        }]
+      },
+      {
+        "id": 3,
+        "title": "Request Duration (p95)",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 8},
+        "targets": [{
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, path))",
+          "legendFormat": "{{path}}"
+        }],
+        "yaxes": [{"format": "s", "show": true}]
+      }
+    ],
+    "time": {"from": "now-1h", "to": "now"},
+    "refresh": "10s"
+  }
+}

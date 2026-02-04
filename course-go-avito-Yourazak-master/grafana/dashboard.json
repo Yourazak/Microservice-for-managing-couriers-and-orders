@@ -1,0 +1,21 @@
+{
+  "dashboard": {
+    "title": "Courier Service Metrics",
+    "panels": [
+      {
+        "title": "HTTP Requests Rate",
+        "targets": [{
+          "expr": "rate(http_requests_total[5m])",
+          "legendFormat": "{{method}} {{path}}"
+        }]
+      },
+      {
+        "title": "HTTP Status Codes",
+        "targets": [{
+          "expr": "sum(http_requests_total) by (status)",
+          "legendFormat": "Status {{status}}"
+        }]
+      }
+    ]
+  }
+}
